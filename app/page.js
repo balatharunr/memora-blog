@@ -5,11 +5,13 @@ import MainLayout from '../components/MainLayout';
 import PostCard from '../components/PostCard';
 import { useSession, signIn } from 'next-auth/react';
 import { useAllPosts } from '../lib/hooks';
+import { isAdmin } from '../lib/adminUtils';
 import Link from 'next/link';
 
 export default function Home() {
   const { data: session } = useSession();
   const { posts, loading, error } = useAllPosts();
+  const userIsAdmin = isAdmin(session);
   
   const refreshPosts = useCallback(() => {
     // The posts will refresh automatically on the next render

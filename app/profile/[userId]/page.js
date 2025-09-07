@@ -8,6 +8,7 @@ import PostCard from '../../../components/PostCard';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useUserPosts } from '../../../lib/hooks';
+import { isAdmin } from '../../../lib/adminUtils';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
 import { 
@@ -32,6 +33,7 @@ function ProfileContent() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [profileFormData, setProfileFormData] = useState({ name: '', bio: '', location: '' });
   const [isUpdating, setIsUpdating] = useState(false);
+  const userIsAdmin = isAdmin(session);
   
   // Use the custom hook to get the user's posts
   const { posts: userPosts, loading: postsLoading } = useUserPosts(userId);
@@ -389,7 +391,7 @@ function ProfileContent() {
                     <PostCard 
                       key={post.id} 
                       post={post} 
-                      onDelete={isOwnProfile ? handleDeletePost : undefined} 
+                      onDelete={(isOwnProfile || userIsAdmin) ? handleDeletePost : undefined} 
                       onEdit={isOwnProfile ? handleEditPost : undefined}
                       refreshPosts={refreshPosts}
                     />

@@ -8,6 +8,7 @@ import { FaHeart, FaRegHeart, FaComment, FaEllipsisH } from 'react-icons/fa';
 import { formatDistanceToNow } from 'date-fns';
 import { checkLiked, toggleLike, addComment, getPost } from '../lib/firebaseUtils';
 import { usePostActions } from '../lib/hooks';
+import { isAdmin } from '../lib/adminUtils';
 
 const PostCard = ({ post, onDelete, onEdit, refreshPosts }) => {
   const { data: session } = useSession();
@@ -22,6 +23,7 @@ const PostCard = ({ post, onDelete, onEdit, refreshPosts }) => {
   const { deletePost } = usePostActions();
 
   const isAuthor = session?.user?.id === post.authorId;
+  const userIsAdmin = isAdmin(session);
   
   // Update comments when post changes
   useEffect(() => {
@@ -121,7 +123,11 @@ const PostCard = ({ post, onDelete, onEdit, refreshPosts }) => {
   };
 
   const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this post?')) {
+    const confirmMessage = userIsAdmin && !isAuthor 
+      ? 'Are you sure you want to delete this post as an admin?' 
+      : 'Are you sure you want to delete this post?';
+      
+    if (window.confirm(confirmMessage)) {
       try {
         setLoading(true);
         await deletePost(post.id);
@@ -174,7 +180,8 @@ const PostCard = ({ post, onDelete, onEdit, refreshPosts }) => {
                 'Recently')}
           </span>
           
-          {isAuthor && (
+          {/* Show options menu for post author or admin */}
+          {(isAuthor || userIsAdmin) && (
             <div className="relative inline-block">
               <button onClick={() => setShowMenu(!showMenu)} className="p-2">
                 <FaEllipsisH />
@@ -183,20 +190,24 @@ const PostCard = ({ post, onDelete, onEdit, refreshPosts }) => {
               {showMenu && (
                 <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-10">
                   <div className="py-1">
-                    <button 
-                      onClick={() => {
-                        onEdit && onEdit(post);
-                        setShowMenu(false);
-                      }}
-                      className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-700"
-                    >
-                      Edit Post
-                    </button>
+                    {/* Only show edit option for the author, not admin */}
+                    {isAuthor && (
+                      <button 
+                        onClick={() => {
+                          onEdit && onEdit(post);
+                          setShowMenu(false);
+                        }}
+                        className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-700"
+                      >
+                        Edit Post
+                      </button>
+                    )}
+                    {/* Show delete option for both author and admin */}
                     <button 
                       onClick={handleDelete}
                       className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700"
                     >
-                      Delete Post
+                      {userIsAdmin && !isAuthor ? "Delete Post (Admin)" : "Delete Post"}
                     </button>
                   </div>
                 </div>
