@@ -8,6 +8,7 @@ import MainLayout from '../../../components/MainLayout';
 import PostCard from '../../../components/PostCard';
 import CreatePostForm from '../../../components/CreatePostForm';
 import { usePost, usePostActions } from '../../../lib/hooks';
+import { isAdmin } from '../../../lib/adminUtils';
 
 // Client component that uses the useParams hook
 function PostContent() {
@@ -18,6 +19,7 @@ function PostContent() {
   
   const [isEditing, setIsEditing] = useState(false);
   const [relatedPosts, setRelatedPosts] = useState([]);
+  const userIsAdmin = isAdmin(session);
   
   // Use the usePost hook to fetch the post data
   const { 
@@ -30,7 +32,11 @@ function PostContent() {
   } = usePost(postId);
   
   const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this post?')) {
+    const confirmMessage = userIsAdmin && session?.user?.id !== post?.authorId 
+      ? 'Are you sure you want to delete this post as an admin?' 
+      : 'Are you sure you want to delete this post?';
+      
+    if (window.confirm(confirmMessage)) {
       try {
         await deletePost(postId);
         router.push('/');
@@ -75,20 +81,24 @@ function PostContent() {
   return (
     <MainLayout>
       <div className="space-y-8">
-        {/* Post actions for author */}
-        {isAuthor && !isEditing && (
+        {/* Post actions for author or admin */}
+        {(isAuthor || userIsAdmin) && !isEditing && (
           <div className="flex justify-end gap-3">
-            <button
-              onClick={() => setIsEditing(true)}
-              className="px-4 py-2 bg-gray-800 rounded-md hover:bg-gray-700"
-            >
-              Edit Post
-            </button>
+            {/* Only show edit button for the author */}
+            {isAuthor && (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="px-4 py-2 bg-gray-800 rounded-md hover:bg-gray-700"
+              >
+                Edit Post
+              </button>
+            )}
+            {/* Show delete button for both author and admin */}
             <button
               onClick={handleDelete}
               className="px-4 py-2 bg-red-900/50 text-red-100 rounded-md hover:bg-red-900/80"
             >
-              Delete Post
+              {userIsAdmin && !isAuthor ? "Delete Post (Admin)" : "Delete Post"}
             </button>
           </div>
         )}
@@ -110,7 +120,7 @@ function PostContent() {
         ) : (
           <PostCard 
             post={post} 
-            onDelete={isAuthor ? handleDelete : undefined} 
+            onDelete={(isAuthor || userIsAdmin) ? handleDelete : undefined} 
             onEdit={isAuthor ? () => setIsEditing(true) : undefined}
           />
         )}
