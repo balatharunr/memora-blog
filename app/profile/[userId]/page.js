@@ -231,6 +231,9 @@ function ProfileContent() {
       
       // Close the modal
       setShowEditModal(false);
+      
+      // Force a refresh to make sure the session is updated with new data
+      window.location.reload();
     } catch (error) {
       console.error('Error updating profile:', error);
     } finally {
