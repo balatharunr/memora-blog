@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import MainLayout from '../../components/MainLayout';
 import CreatePostForm from '../../components/CreatePostForm';
 import Link from 'next/link';
 
-export default function CreatePage() {
+// Client component that uses the useRouter hook
+function CreateContent() {
   const { data: session, status } = useSession();
   const isLoading = status === 'loading';
   const router = useRouter();
@@ -67,5 +68,20 @@ export default function CreatePage() {
         )}
       </div>
     </MainLayout>
+  );
+}
+
+// Main page component with Suspense boundary
+export default function CreatePage() {
+  return (
+    <Suspense fallback={
+      <MainLayout>
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500"></div>
+        </div>
+      </MainLayout>
+    }>
+      <CreateContent />
+    </Suspense>
   );
 }
