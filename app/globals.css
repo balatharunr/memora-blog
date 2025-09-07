@@ -1,22 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff.blog-font {
-  font-family: var(--font-great-vibes), cursive;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 30px;
-  color: white;
-  margin-left: 15px;
-  margin-top: 12px;
-  transform: translateY(5px);
-}reground: #171717;
+  --background: #ffffff;
+  --foreground: #171717;
   --memora-primary: #9333ea; /* Purple color for Memora brand */
   --memora-secondary: #ec4899; /* Pink color for gradient */
 }
 
-@theme inline {
+/* Theme variables */
+:root {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -63,6 +55,12 @@ body {
   /* Force center alignment on mobile */
   body {
     overflow-x: hidden;
+    padding-top: 0; /* Remove any top padding */
+  }
+  
+  /* Account for the mobile header */
+  .mobile-header-space {
+    height: 60px;
   }
   
   /* This ensures all direct children of the main content area are centered */
@@ -99,6 +97,14 @@ body {
   margin-left: 12px;
   margin-top: 12px;
   transform: translateY(1px);
+}
+
+/* Mobile-specific blog font style */
+.mobile-blog-font {
+  font-size: 28px;
+  margin-left: 8px;
+  margin-top: 8px;
+  transform: translateY(0);
 }
 
 /* Specific style for signin page blog text */

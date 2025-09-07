@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useParams } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import MainLayout from '../../../components/MainLayout';
 import PostCard from '../../../components/PostCard';
 import Image from 'next/image';
@@ -275,6 +275,14 @@ function ProfileContent() {
     );
   }
   
+  // Function to handle logout
+  const handleLogout = () => {
+    if (window.confirm('Are you sure you want to log out?')) {
+      // Use next-auth signOut function
+      signOut({ callbackUrl: '/' });
+    }
+  };
+  
   return (
     <MainLayout>
       <div className="space-y-8 w-full post-container">
@@ -301,12 +309,25 @@ function ProfileContent() {
                 <h1 className="text-2xl font-bold">{user.name}</h1>
                 
                 {isOwnProfile ? (
-                  <button 
-                    onClick={handleEditProfileClick}
-                    className="px-4 py-2 bg-gray-800 rounded-md hover:bg-gray-700 transition-colors"
-                  >
-                    Edit Profile
-                  </button>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <button 
+                      onClick={handleEditProfileClick}
+                      className="px-4 py-2 bg-gray-800 rounded-md hover:bg-gray-700 transition-colors"
+                    >
+                      Edit Profile
+                    </button>
+                    
+                    {/* Mobile logout button - only visible on mobile */}
+                    <button 
+                      onClick={handleLogout}
+                      className="lg:hidden px-4 py-2 bg-red-900/30 text-red-400 rounded-md hover:bg-red-900/50 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V4a1 1 0 00-1-1H3zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
+                      </svg>
+                      Logout
+                    </button>
+                  </div>
                 ) : (
                   <button 
                     onClick={toggleFollow}
@@ -332,6 +353,11 @@ function ProfileContent() {
                   <span className="font-bold">{stats.following}</span> following
                 </div>
               </div>
+              
+              {/* Mobile-only separator when on own profile */}
+              {isOwnProfile && (
+                <div className="lg:hidden h-px w-full bg-gray-800 my-4"></div>
+              )}
               
               {user.bio && <p className="mb-2">{user.bio}</p>}
               {user.location && (

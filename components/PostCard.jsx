@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { FaHeart, FaRegHeart, FaComment, FaEllipsisH } from 'react-icons/fa';
 import { formatDistanceToNow } from 'date-fns';
 import { checkLiked, toggleLike, addComment, getPost } from '../lib/firebaseUtils';
-import { usePostActions } from '../lib/hooks';
+import { usePostActions, useCommentActions } from '../lib/hooks';
 import { isAdmin } from '../lib/adminUtils';
 
 const PostCard = ({ post, onDelete, refreshPosts }) => {
@@ -20,9 +20,11 @@ const PostCard = ({ post, onDelete, refreshPosts }) => {
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState(post.comments || []);
   const [showMenu, setShowMenu] = useState(false);
+  const [commentOptionsMenuId, setCommentOptionsMenuId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [loadingComments, setLoadingComments] = useState(false);
   const { deletePost } = usePostActions();
+  const { deleteComment } = useCommentActions();
 
   const isAuthor = session?.user?.id === post.authorId;
   const userIsAdmin = isAdmin(session);
@@ -56,6 +58,20 @@ const PostCard = ({ post, onDelete, refreshPosts }) => {
     
     checkIfLiked();
   }, [post.id, session]);
+  
+  // Close comment options menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (commentOptionsMenuId && !event.target.closest('.comment-options-menu')) {
+        setCommentOptionsMenuId(null);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [commentOptionsMenuId]);
   
   const toggleLikeHandler = async () => {
     if (!session?.user?.id) {
@@ -139,6 +155,38 @@ const PostCard = ({ post, onDelete, refreshPosts }) => {
         onDelete && onDelete(post.id);
       } catch (error) {
         console.error('Error deleting post:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+  
+  const handleDeleteComment = async (commentId, commentUserId) => {
+    // Check if current user is the comment author or an admin
+    const isCommentAuthor = session?.user?.id === commentUserId;
+    const canDelete = isCommentAuthor || userIsAdmin;
+    
+    if (!canDelete) return;
+    
+    const confirmMessage = userIsAdmin && !isCommentAuthor
+      ? 'Are you sure you want to delete this comment as an admin?'
+      : 'Are you sure you want to delete this comment?';
+      
+    if (window.confirm(confirmMessage)) {
+      try {
+        setLoading(true);
+        await deleteComment(commentId);
+        
+        // Update local comments state
+        setComments(prev => prev.filter(comment => comment.id !== commentId));
+        
+        // Update comment count on post
+        post.commentCount = Math.max((post.commentCount || 0) - 1, 0);
+        
+        // Close any open menus
+        setCommentOptionsMenuId(null);
+      } catch (error) {
+        console.error('Error deleting comment:', error);
       } finally {
         setLoading(false);
       }
@@ -231,7 +279,7 @@ const PostCard = ({ post, onDelete, refreshPosts }) => {
             {post.hashtags.map(tag => (
               <Link 
                 key={tag} 
-                href={`/explore?tag=${tag}`} 
+                href={`/explore?tag=${encodeURIComponent(tag)}`} 
                 className="text-purple-400 text-sm hover:underline"
                 prefetch={true} // Ensure data is pre-fetched for smoother transitions
                 scroll={false} // Prevent scroll jumping
@@ -295,9 +343,44 @@ const PostCard = ({ post, onDelete, refreshPosts }) => {
             ) : comments.length > 0 ? (
               comments.map(comment => (
                 <div key={comment.id} className="mb-3">
-                  <div className="flex items-start gap-2">
-                    <div className="font-medium">{comment.userName || comment.author?.name || 'User'}</div>
-                    <div className="text-gray-300">{comment.content}</div>
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-2">
+                      <div className="font-medium">{comment.userName || comment.author?.name || 'User'}</div>
+                      <div className="text-gray-300">{comment.content}</div>
+                    </div>
+                    
+                    {/* Comment options menu - show only for comment author or admin */}
+                    {(session?.user?.id === comment.userId || userIsAdmin) && (
+                      <div className="relative comment-options-menu">
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCommentOptionsMenuId(commentOptionsMenuId === comment.id ? null : comment.id);
+                          }}
+                          className="p-1 text-gray-400 hover:text-white"
+                        >
+                          <FaEllipsisH size={12} />
+                        </button>
+                        
+                        {commentOptionsMenuId === comment.id && (
+                          <div className="absolute right-0 mt-2 w-40 bg-gray-800 rounded-md shadow-lg z-10 comment-options-menu">
+                            <div className="py-1">
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDeleteComment(comment.id, comment.userId);
+                                }}
+                                className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700"
+                              >
+                                {userIsAdmin && session?.user?.id !== comment.userId 
+                                  ? "Delete Comment (Admin)" 
+                                  : "Delete Comment"}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                   <div className="text-xs text-gray-400 ml-4 mt-1">
                     {comment.createdAt && comment.createdAt.seconds ? 

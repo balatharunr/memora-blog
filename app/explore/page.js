@@ -14,15 +14,18 @@ async function searchPostsByTag(tag) {
   if (!tag) return [];
   
   try {
-    console.log(`Searching for posts with tag: ${tag}`);
+    // Make sure the tag is properly formatted (remove # if present)
+    const cleanTag = tag.startsWith('#') ? tag.substring(1) : tag;
+    console.log(`Searching for posts with tag: ${cleanTag}`);
+    
     const postsCollection = collection(db, 'posts');
     const postsQuery = query(
       postsCollection,
-      where('hashtags', 'array-contains', tag)
+      where('hashtags', 'array-contains', cleanTag)
     );
     
     const snapshot = await getDocs(postsQuery);
-    console.log(`Found ${snapshot.size} posts with tag ${tag}`);
+    console.log(`Found ${snapshot.size} posts with tag ${cleanTag}`);
     
     const posts = [];
     snapshot.forEach(doc => {
@@ -54,10 +57,16 @@ function ExploreContent() {
   // Get list of hashtags from all posts
   const [hashtags, setHashtags] = useState([]);
   
-  // Handle tag parameter from URL
+  // Handle tag parameter from URL with proper cleanup
   useEffect(() => {
-    if (tagParam && tagParam !== activeTag) {
-      setActiveTag(tagParam);
+    if (tagParam) {
+      // Clean up the tag from URL params (remove # if present)
+      const cleanTag = tagParam.startsWith('#') ? tagParam.substring(1) : tagParam;
+      
+      if (cleanTag !== activeTag) {
+        console.log(`Setting active tag from URL: ${cleanTag}`);
+        setActiveTag(cleanTag);
+      }
     }
   }, [tagParam, activeTag]);
   
@@ -89,7 +98,7 @@ function ExploreContent() {
     }
   }, [allPosts, activeTag]);
   
-  // Simple effect to filter posts when active tag changes
+  // Effect to filter posts when active tag changes
   useEffect(() => {
     const filterPosts = async () => {
       // Skip if posts are still loading
@@ -107,7 +116,10 @@ function ExploreContent() {
         setIsLoading(true);
         setFilteredPosts([]); // Clear posts while loading
         
+        // Make sure the tag is properly formatted (remove # if present)
         const cleanTag = activeTag.startsWith('#') ? activeTag.substring(1) : activeTag;
+        console.log(`Filtering posts for tag: ${cleanTag}`);
+        
         const taggedPosts = await searchPostsByTag(cleanTag);
         
         // Give a small delay for smooth transition
@@ -125,18 +137,19 @@ function ExploreContent() {
     filterPosts();
   }, [activeTag, allPosts, allPostsLoading]);
   
-  // Simple handler for tag clicks
+  // Handler for tag clicks with proper cleanup and routing
   const handleTagClick = (tag) => {
     if (isLoading) return; // Prevent clicking during loading
     
+    // Make sure we always clean the tag properly (remove # if present)
     const cleanTag = tag.startsWith('#') ? tag.substring(1) : tag;
     
     // Don't do anything if it's the same tag
     if (cleanTag === activeTag) return;
     
-    // Update URL
+    // Update URL with proper encoding
     if (cleanTag !== 'all') {
-      router.push(`/explore?tag=${cleanTag}`, { scroll: false });
+      router.push(`/explore?tag=${encodeURIComponent(cleanTag)}`, { scroll: false });
     } else {
       router.push('/explore', { scroll: false });
     }
@@ -146,6 +159,8 @@ function ExploreContent() {
     
     // Update active tag
     setActiveTag(cleanTag);
+    
+    console.log(`Tag clicked: ${cleanTag}`);
   };
   
   // Simple search functionality
