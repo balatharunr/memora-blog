@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import MainLayout from '../../../components/MainLayout';
@@ -12,7 +12,8 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
 import { updateUserProfile } from '../../../lib/firebaseUtils';
 
-export default function ProfilePage() {
+// Client component that uses the useParams hook
+function ProfileContent() {
   const { userId } = useParams();
   const { data: session } = useSession();
   
@@ -480,5 +481,20 @@ export default function ProfilePage() {
         </div>
       )}
     </MainLayout>
+  );
+}
+
+// Main page component with Suspense boundary
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={
+      <MainLayout>
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500"></div>
+        </div>
+      </MainLayout>
+    }>
+      <ProfileContent />
+    </Suspense>
   );
 }

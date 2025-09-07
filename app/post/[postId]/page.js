@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -9,7 +9,8 @@ import PostCard from '../../../components/PostCard';
 import CreatePostForm from '../../../components/CreatePostForm';
 import { usePost, usePostActions } from '../../../lib/hooks';
 
-export default function PostPage() {
+// Client component that uses the useParams hook
+function PostContent() {
   const { postId } = useParams();
   const { data: session } = useSession();
   const router = useRouter();
@@ -120,5 +121,20 @@ export default function PostPage() {
         */}
       </div>
     </MainLayout>
+  );
+}
+
+// Main page component with Suspense boundary
+export default function PostPage() {
+  return (
+    <Suspense fallback={
+      <MainLayout>
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500"></div>
+        </div>
+      </MainLayout>
+    }>
+      <PostContent />
+    </Suspense>
   );
 }

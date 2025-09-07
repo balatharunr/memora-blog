@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import MainLayout from '../../components/MainLayout';
 import PostCard from '../../components/PostCard';
@@ -36,7 +36,8 @@ async function searchPostsByTag(tag) {
   }
 }
 
-export default function ExplorePage() {
+// Client component that uses searchParams
+function ExploreContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const tagParam = searchParams.get('tag');
@@ -273,5 +274,25 @@ export default function ExplorePage() {
         )}
       </div>
     </MainLayout>
+  );
+}
+
+// Main page component with Suspense boundary
+export default function ExplorePage() {
+  return (
+    <Suspense fallback={
+      <MainLayout>
+        <div className="space-y-6">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-bold">Explore</h1>
+          </div>
+          <div className="flex justify-center items-center p-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-purple-500 border-t-transparent"></div>
+          </div>
+        </div>
+      </MainLayout>
+    }>
+      <ExploreContent />
+    </Suspense>
   );
 }
