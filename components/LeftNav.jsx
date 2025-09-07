@@ -26,7 +26,7 @@ const LeftNav = () => {
     { path: '/explore', icon: <FaCompass size={20} />, label: 'Explore' },
     { path: '/notifications', icon: <FaBell size={20} />, label: 'Notifications' },
     { path: '/create', icon: <FaPlusSquare size={20} />, label: 'Create' },
-    { path: `/profile/${session?.user?.id || ''}`, icon: <FaUser size={20} />, label: 'Profile' },
+    { path: session ? `/profile/${session.user.id}` : '/auth/signin', icon: <FaUser size={20} />, label: 'Profile' },
     { path: '/dashboard', icon: <FaCompass size={20} />, label: 'Dashboard' },
   ];
 

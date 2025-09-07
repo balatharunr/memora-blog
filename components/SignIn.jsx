@@ -59,23 +59,6 @@ const SignIn = () => {
         <div className="mt-8 text-center text-sm text-gray-500">
           <p>By signing in, you agree to our Terms of Service and Privacy Policy</p>
         </div>
-        
-        <div className="mt-8">
-          <div className="grid grid-cols-3 gap-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="aspect-square relative rounded-md overflow-hidden shadow-md">
-                <Image
-                  src={`https://source.unsplash.com/random/300x300?sig=${i}&nature`}
-                  alt="Memora preview"
-                  fill
-                  className="object-cover hover:scale-110 transition-all duration-500"
-                  sizes="(max-width: 768px) 30vw, 100px"
-                  priority={i === 1}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );
