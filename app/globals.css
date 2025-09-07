@@ -100,3 +100,12 @@ body {
   margin-top: 12px;
   transform: translateY(1px);
 }
+
+/* Specific style for signin page blog text */
+.signin-blog-text {
+  font-size: 35px;
+  margin-left: 12px;
+  margin-top: 0 !important;
+  transform: translateY(0) !important;
+  padding-top: 8px;
+}
