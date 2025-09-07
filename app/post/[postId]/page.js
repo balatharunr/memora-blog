@@ -6,7 +6,6 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import MainLayout from '../../../components/MainLayout';
 import PostCard from '../../../components/PostCard';
-import CreatePostForm from '../../../components/CreatePostForm';
 import { usePost, usePostActions } from '../../../lib/hooks';
 import { isAdmin } from '../../../lib/adminUtils';
 
@@ -17,7 +16,6 @@ function PostContent() {
   const router = useRouter();
   const { deletePost } = usePostActions();
   
-  const [isEditing, setIsEditing] = useState(false);
   const [relatedPosts, setRelatedPosts] = useState([]);
   const userIsAdmin = isAdmin(session);
   
@@ -47,9 +45,8 @@ function PostContent() {
     }
   };
   
-  const handleUpdatePost = (updatedPost) => {
-    setIsEditing(false);
-    router.refresh(); // Refresh the page to show the updated post
+  const handleEditRedirect = () => {
+    router.push(`/edit/${postId}`);
   };
   
   if (isLoading) {
@@ -82,12 +79,12 @@ function PostContent() {
     <MainLayout>
       <div className="space-y-8">
         {/* Post actions for author or admin */}
-        {(isAuthor || userIsAdmin) && !isEditing && (
+        {(isAuthor || userIsAdmin) && (
           <div className="flex justify-end gap-3">
             {/* Only show edit button for the author */}
             {isAuthor && (
               <button
-                onClick={() => setIsEditing(true)}
+                onClick={handleEditRedirect}
                 className="px-4 py-2 bg-gray-800 rounded-md hover:bg-gray-700"
               >
                 Edit Post
@@ -103,27 +100,10 @@ function PostContent() {
           </div>
         )}
         
-        {/* Edit form or post display */}
-        {isEditing ? (
-          <div className="bg-gray-900 rounded-lg p-6">
-            <h2 className="text-xl font-bold mb-4">Edit Post</h2>
-            <CreatePostForm initialData={post} onSuccess={handleUpdatePost} />
-            <div className="mt-4 text-right">
-              <button
-                onClick={() => setIsEditing(false)}
-                className="px-4 py-2 bg-gray-800 rounded-md hover:bg-gray-700"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        ) : (
-          <PostCard 
-            post={post} 
-            onDelete={(isAuthor || userIsAdmin) ? handleDelete : undefined} 
-            onEdit={isAuthor ? () => setIsEditing(true) : undefined}
-          />
-        )}
+        <PostCard 
+          post={post} 
+          onDelete={(isAuthor || userIsAdmin) ? handleDelete : undefined} 
+        />
         
         {/* 
           Related posts feature temporarily disabled as we'd need additional

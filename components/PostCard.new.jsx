@@ -11,7 +11,7 @@ import { checkLiked, toggleLike, addComment, getPost } from '../lib/firebaseUtil
 import { usePostActions } from '../lib/hooks';
 import { isAdmin } from '../lib/adminUtils';
 
-const PostCard = ({ post, onDelete, refreshPosts }) => {
+const PostCard = ({ post, onDelete, onEdit, refreshPosts }) => {
   const { data: session } = useSession();
   const router = useRouter();
   const [liked, setLiked] = useState(false);
@@ -197,9 +197,10 @@ const PostCard = ({ post, onDelete, refreshPosts }) => {
                       <button 
                         onClick={(e) => {
                           e.stopPropagation();
-                          setShowMenu(false);
-                          // Navigate to dedicated edit page
-                          router.push(`/edit/${post.id}`);
+                          if (onEdit) {
+                            onEdit(post);
+                            setShowMenu(false);
+                          }
                         }}
                         className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-700"
                       >
