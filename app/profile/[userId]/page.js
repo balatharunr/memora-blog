@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import MainLayout from '../../../components/MainLayout';
 import PostCard from '../../../components/PostCard';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useUserPosts } from '../../../lib/hooks';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
@@ -205,9 +206,9 @@ export default function ProfilePage() {
         <div className="bg-gray-900 rounded-lg p-8 text-center">
           <h1 className="text-2xl font-bold mb-4">Profile</h1>
           <p className="text-gray-400 mb-4">You need to be signed in to view profiles.</p>
-          <a href="/auth/signin" className="bg-purple-600 text-white px-6 py-3 rounded-md font-medium hover:bg-purple-700">
+          <Link href="/auth/signin" className="bg-purple-600 text-white px-6 py-3 rounded-md font-medium hover:bg-purple-700">
             Sign In
-          </a>
+          </Link>
         </div>
       </MainLayout>
     );
@@ -354,9 +355,9 @@ export default function ProfilePage() {
                   </svg>
                   <p className="text-gray-400">No posts yet</p>
                   {isOwnProfile && (
-                    <a href="/create" className="mt-4 inline-block text-purple-400 hover:underline">
+                    <Link href="/create" className="mt-4 inline-block text-purple-400 hover:underline">
                       Create your first post
-                    </a>
+                    </Link>
                   )}
                 </div>
               )}

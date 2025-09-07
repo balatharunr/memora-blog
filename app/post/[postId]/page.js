@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import MainLayout from '../../../components/MainLayout';
 import PostCard from '../../../components/PostCard';
 import CreatePostForm from '../../../components/CreatePostForm';
@@ -59,10 +60,10 @@ export default function PostPage() {
       <MainLayout>
         <div className="bg-gray-900 rounded-lg p-8 text-center">
           <h1 className="text-2xl font-bold mb-4">Post Not Found</h1>
-          <p className="text-gray-400">The post you're looking for doesn't exist or has been removed.</p>
-          <a href="/" className="mt-4 inline-block text-purple-400 hover:underline">
+          <p className="text-gray-400">The post you&apos;re looking for doesn&apos;t exist or has been removed.</p>
+          <Link href="/" className="mt-4 inline-block text-purple-400 hover:underline">
             Go back to home
-          </a>
+          </Link>
         </div>
       </MainLayout>
     );
