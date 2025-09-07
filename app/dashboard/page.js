@@ -125,10 +125,12 @@ export default function DashboardPage() {
                     <Link href={`/post/${analytics.mostPopularPost.id}`} className="block hover:opacity-80">
                       {analytics.mostPopularPost.image && (
                         <div className="aspect-video relative rounded-md overflow-hidden mb-3">
-                          <img 
+                          <Image 
                             src={analytics.mostPopularPost.image} 
-                            alt={analytics.mostPopularPost.title} 
-                            className="object-cover w-full h-full"
+                            alt={analytics.mostPopularPost.title}
+                            className="object-cover"
+                            fill
+                            sizes="(max-width: 768px) 100vw, 50vw"
                           />
                         </div>
                       )}
@@ -229,11 +231,13 @@ export default function DashboardPage() {
                 {analytics.recentPosts.map((post) => (
                   <Link key={post.id} href={`/post/${post.id}`} className="flex gap-4 hover:bg-gray-800 p-3 rounded-md">
                     {post.image ? (
-                      <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
-                        <img 
+                      <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0 relative">
+                        <Image 
                           src={post.image} 
                           alt={post.title} 
-                          className="object-cover w-full h-full"
+                          className="object-cover"
+                          fill
+                          sizes="80px"
                         />
                       </div>
                     ) : (
@@ -277,11 +281,13 @@ export default function DashboardPage() {
               <div className="space-y-4">
                 {trendingPosts.map((post) => (
                   <Link key={post.id} href={`/post/${post.id}`} className="flex gap-3 group">
-                    <div className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0">
-                      <img 
+                    <div className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0 relative">
+                      <Image 
                         src={post.image || 'https://via.placeholder.com/150'} 
                         alt={post.title} 
-                        className="object-cover w-full h-full group-hover:scale-105 transition"
+                        className="object-cover group-hover:scale-105 transition"
+                        fill
+                        sizes="48px"
                       />
                     </div>
                     <div>
