@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FaHeart, FaRegHeart, FaComment, FaEllipsisH } from 'react-icons/fa';
 import { formatDistanceToNow } from 'date-fns';
-import { checkLiked, toggleLike, addComment } from '../lib/firebaseUtils';
+import { checkLiked, toggleLike, addComment, getPost } from '../lib/firebaseUtils';
 import { usePostActions } from '../lib/hooks';
 
 const PostCard = ({ post, onDelete, onEdit, refreshPosts }) => {
@@ -18,9 +18,24 @@ const PostCard = ({ post, onDelete, onEdit, refreshPosts }) => {
   const [comments, setComments] = useState(post.comments || []);
   const [showMenu, setShowMenu] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingComments, setLoadingComments] = useState(false);
   const { deletePost } = usePostActions();
 
   const isAuthor = session?.user?.id === post.authorId;
+  
+  // Update comments when post changes
+  useEffect(() => {
+    if (post.comments && post.comments.length > 0) {
+      setComments(post.comments);
+    }
+  }, [post.comments]);
+  
+  // Fetch comments when comment section is opened
+  useEffect(() => {
+    if (showComments) {
+      fetchCommentsIfNeeded();
+    }
+  }, [showComments]);
   
   // Check if user has liked this post
   useEffect(() => {
@@ -56,6 +71,23 @@ const PostCard = ({ post, onDelete, onEdit, refreshPosts }) => {
       setLoading(false);
     }
   };
+  
+  const fetchCommentsIfNeeded = async () => {
+    // If we have a comment count but no comments, fetch them
+    if ((post.commentCount > 0 && comments.length === 0) || showComments) {
+      try {
+        setLoadingComments(true);
+        const fullPost = await getPost(post.id);
+        if (fullPost && fullPost.comments) {
+          setComments(fullPost.comments);
+        }
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+      } finally {
+        setLoadingComments(false);
+      }
+    }
+  };
 
   const handleAddComment = async (e) => {
     e.preventDefault();
@@ -77,7 +109,9 @@ const PostCard = ({ post, onDelete, onEdit, refreshPosts }) => {
         createdAt: new Date() // The server timestamp won't be available immediately
       };
       
+      // Update comments array and comment count
       setComments(prev => [...prev, commentWithFormattedDate]);
+      post.commentCount = (post.commentCount || 0) + 1;
       setCommentText('');
     } catch (error) {
       console.error('Error adding comment:', error);
@@ -222,7 +256,12 @@ const PostCard = ({ post, onDelete, onEdit, refreshPosts }) => {
         </button>
         
         <button 
-          onClick={() => setShowComments(!showComments)}
+          onClick={() => {
+            setShowComments(!showComments);
+            if (!showComments) {
+              fetchCommentsIfNeeded();
+            }
+          }}
           className="flex items-center gap-2 text-sm"
         >
           <FaComment size={20} />
@@ -234,7 +273,11 @@ const PostCard = ({ post, onDelete, onEdit, refreshPosts }) => {
       {showComments && (
         <div className="px-4 py-3 border-t border-gray-800">
           <div className="mb-4 max-h-60 overflow-y-auto">
-            {comments.length > 0 ? (
+            {loadingComments ? (
+              <div className="flex justify-center items-center py-4">
+                <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-purple-500"></div>
+              </div>
+            ) : comments.length > 0 ? (
               comments.map(comment => (
                 <div key={comment.id} className="mb-3">
                   <div className="flex items-start gap-2">
@@ -248,6 +291,8 @@ const PostCard = ({ post, onDelete, onEdit, refreshPosts }) => {
                   </div>
                 </div>
               ))
+            ) : post.commentCount > 0 ? (
+              <div className="text-gray-400 text-sm text-center py-2">No comments found. Try refreshing.</div>
             ) : (
               <div className="text-gray-400 text-sm">No comments yet. Be the first to comment!</div>
             )}
