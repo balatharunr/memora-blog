@@ -214,13 +214,13 @@ export default function ProfilePage() {
     );
   }
   
-  // Check if user data doesn't exist
+  // Check if user data doesn\'t exist
   if (!user) {
     return (
       <MainLayout>
         <div className="bg-gray-900 rounded-lg p-8 text-center">
           <h1 className="text-2xl font-bold mb-4">User Not Found</h1>
-          <p className="text-gray-400">The user you're looking for doesn't exist or has been removed.</p>
+          <p className="text-gray-400">The user you&apos;re looking for doesn&apos;t exist or has been removed.</p>
         </div>
       </MainLayout>
     );
