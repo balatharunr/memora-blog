@@ -7,7 +7,7 @@ import { FaImage, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { usePostActions } from '../lib/hooks';
 
-const CreatePostForm = ({ onSuccess, initialData }) => {
+const CreatePostForm = ({ onSuccess, initialData, onCancel }) => {
   const { data: session } = useSession();
   const router = useRouter();
   const fileInputRef = useRef(null);
@@ -97,7 +97,17 @@ const CreatePostForm = ({ onSuccess, initialData }) => {
       const postData = {
         title,
         content,
-        hashtags: processedHashtags
+        hashtags: processedHashtags,
+        // Keep original properties if editing
+        ...(isEditing && {
+          id: initialData.id,
+          authorId: initialData.authorId,
+          authorName: initialData.authorName,
+          authorImage: initialData.authorImage,
+          likes: initialData.likes || 0,
+          commentCount: initialData.commentCount || 0,
+          createdAt: initialData.createdAt,
+        })
       };
       
       // Handle image upload to Cloudinary if it exists
@@ -116,12 +126,23 @@ const CreatePostForm = ({ onSuccess, initialData }) => {
         else if (typeof image === 'string') {
           postData.image = image;
         }
+      } else {
+        // Set image to null if it was removed
+        postData.image = null;
       }
       
       let result;
       
       if (isEditing) {
         result = await updatePost(initialData.id, postData);
+        // Merge result with original post data to ensure we have all fields
+        result = {
+          ...initialData,
+          ...postData,
+          ...result,
+          // Make sure we have the full post data
+          comments: initialData.comments || [],
+        };
       } else {
         result = await createPost(postData);
       }
@@ -222,7 +243,16 @@ const CreatePostForm = ({ onSuccess, initialData }) => {
         </div>
       )}
       
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-4">
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="px-6 py-2 bg-gray-800 rounded-md font-medium hover:bg-gray-700"
+          >
+            Cancel
+          </button>
+        )}
         <button
           type="submit"
           disabled={isSubmitting || firestoreLoading}
