@@ -9,7 +9,6 @@ const RightSidebar = ({ trending = [], hashtags = [], isLoading = false }) => {
       {/* Trending section */}
       <div className="bg-gray-900 rounded-lg p-4 border border-gray-800">
         <h3 className="font-bold text-xl mb-4">#trending</h3>
-        
         <div className="space-y-4">
           {isLoading ? (
             <div className="py-4 flex justify-center">
@@ -37,18 +36,14 @@ const RightSidebar = ({ trending = [], hashtags = [], isLoading = false }) => {
           )}
         </div>
       </div>
-      
       {/* Hashtags section */}
       <div className="bg-gray-900 rounded-lg p-4 border border-gray-800">
         <h3 className="font-bold text-xl mb-4">Discover</h3>
-        
         <div className="flex flex-wrap gap-2">
           {hashtags && hashtags.length > 0 ? (
             hashtags.map((tag) => {
-              // Make sure we don't duplicate the # symbol
               const cleanTag = tag.startsWith('#') ? tag.substring(1) : tag;
               const displayTag = `#${cleanTag}`;
-              
               return (
                 <Link 
                   href={`/explore?tag=${encodeURIComponent(cleanTag)}`} 
@@ -60,6 +55,11 @@ const RightSidebar = ({ trending = [], hashtags = [], isLoading = false }) => {
               );
             })
           ) : (
+            <p className="text-gray-400 text-sm">No hashtags found.</p>
+          )}
+        </div>
+      </div>
+      {/* Social Media
             <p className="text-gray-400 text-sm">No hashtags found.</p>
           )}
         </div>
@@ -95,7 +95,7 @@ const RightSidebar = ({ trending = [], hashtags = [], isLoading = false }) => {
             </div>
           </a>
         </div>
-        <p className="text-center">© 2025 Memora</p>
+        <p className="text-center">©2025 memora blogs</p>
       </div>
     </div>
   );

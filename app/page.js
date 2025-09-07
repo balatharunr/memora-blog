@@ -29,7 +29,7 @@ export default function Home() {
 
   return (
     <MainLayout>
-      <div className="space-y-6">
+      <div className="space-y-6 w-full post-container">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Home</h1>
           {!session && (

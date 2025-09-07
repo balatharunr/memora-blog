@@ -25,7 +25,10 @@ const SignIn = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-950">
       <div className="max-w-md w-full p-8 bg-gray-900 rounded-xl shadow-xl border border-gray-800">
         <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">MEMORA</h1>
+          <div className="flex justify-center items-start">
+            <h1 className="text-5xl memora-font text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">MEMORA</h1>
+            <span className="blog-font" style={{ display: 'inline-block' }}>Blogs</span>
+          </div>
           <p className="mt-3 text-gray-300">Share your moments, connect with the world</p>
         </div>
         

@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #ffffff.blog-font {
+  font-family: var(--font-great-vibes), cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 30px;
+  color: white;
+  margin-left: 15px;
+  margin-top: 12px;
+  transform: translateY(5px);
+}reground: #171717;
   --memora-primary: #9333ea; /* Purple color for Memora brand */
   --memora-secondary: #ec4899; /* Pink color for gradient */
 }
@@ -43,7 +52,51 @@ body {
   background: rgba(255,255,255,0.25);
 }
 
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .mobile-centered {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+  
+  /* Force center alignment on mobile */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* This ensures all direct children of the main content area are centered */
+  .post-container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 /* Utility classes */
 .memora-gradient {
   background: linear-gradient(to right, var(--memora-primary), var(--memora-secondary));
+}
+
+.memora-font {
+  font-family: var(--font-caveat), cursive;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 40px;
+}
+
+.blog-font {
+  font-family: var(--font-great-vibes), cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 35px;
+  color: white;
+  margin-left: 12px;
+  margin-top: 12px;
+  transform: translateY(1px);
 }
