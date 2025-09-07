@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Memora</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="flex flex-col md:flex-row min-h-screen">
+<aside class="hidden md:flex flex-col w-64 p-6 border-r border-gray-800">
+<h1 class="text-3xl font-bold text-fuchsia-400 mb-10">MEMORA</h1>
+<nav class="flex flex-col space-y-6">
+<a class="flex items-center space-x-4 text-lg hover:text-fuchsia-400" href="#">
+<span class="material-icons">home</span>
+<span>Home</span>
+</a>
+<a class="flex items-center space-x-4 text-lg hover:text-fuchsia-400" href="#">
+<span class="material-icons">explore</span>
+<span>Explore</span>
+</a>
+<a class="flex items-center space-x-4 text-lg hover:text-fuchsia-400" href="#">
+<span class="material-icons">send</span>
+<span>Messages</span>
+</a>
+<a class="flex items-center space-x-4 text-lg hover:text-fuchsia-400" href="#">
+<span class="material-icons">notifications</span>
+<span>Notifications</span>
+</a>
+<a class="flex items-center space-x-4 text-lg hover:text-fuchsia-400" href="#">
+<span class="material-icons">add_circle_outline</span>
+<span>Create</span>
+</a>
+<a class="flex items-center space-x-4 text-lg hover:text-fuchsia-400" href="#">
+<img alt="User profile picture" class="w-6 h-6 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCElib90WA0tjTsDXygdigj5OwBmmYO2LZ4b4dLG-u51uUiNqg5bKTj3wCP9Ewc3chRa2-Qru7MbHzYCM3G2LxTqaDpraLY6eymuqGru4KXCSGhEXZwB-S_hLbuVVVV11lPs9Ru07jMCaw5-SQMb8eP3JUu0B88ziCsfnwuKWsWLSYIyU6fk5Vl2OMoB66jq3WSwhJ6oDgb_Ro_NtRVd26Ud1l-veAjtCl_VfSafaPYkpR6T1DNtQNg77TTT_K5qs0zIn3-SetPJgM"/>
+<span>Profile</span>
+</a>
+</nav>
+<div class="mt-auto">
+<a class="flex items-center space-x-4 text-lg hover:text-fuchsia-400" href="#">
+<span class="material-icons">more_horiz</span>
+<span>More</span>
+</a>
+</div>
+</aside>
+<main class="flex-1 p-4 md:p-8">
+<div class="max-w-xl mx-auto">
+<div class="relative mb-8">
+<input class="w-full bg-gray-900 border border-gray-700 rounded-full py-3 pl-6 pr-12 text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-500" placeholder="Search..." type="text"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 bg-white text-black rounded-full p-2">
+<span class="material-icons">search</span>
+</button>
+</div>
+<div class="bg-black rounded-xl overflow-hidden border border-gray-800">
+<div class="flex items-center p-4">
+<img alt="User avatar" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBNsAB4IaA6raYQgcKDIG35X4L9DToBlA8rH9VKzUBKaUHo5e7ixvSLlhvQY9n5PluZ2W4ztiq7wQ4yPm42R0KqI2njG2Bk4L358UKONXw_00bqMBLPBi9C166XUKR3KOLLayd9wVsVPJQ6YCRYcxoUlYAtHUMjXJiRb78u-dTO8vdUqzC_wmTu0hJaCNiTC3OYwoM8mY7H9PFRj3UCRgFYZdlS-66cx9yrsgmTAjmr88V2uQxmed3GugUGaradJzlqGmnxhu5DDk"/>
+<div class="ml-4">
+<p class="font-semibold">laxmisai_93 <span class="font-normal text-gray-400">· 14h</span></p>
+<p class="text-sm text-gray-400">Rock Beach Pondicherry</p>
+</div>
+<button class="ml-auto text-white">
+<span class="material-icons">more_horiz</span>
+</button>
+</div>
+<div class="relative">
+<img alt="A person standing on rocks looking at the ocean" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIICcAWDQoyfJjgluCrukK42KbFUy_u7MDH8FFlMPFpxCx78OdLy9GelogPYUag1WfTnw_Hj4ShrTwSaMUsU3uzV58YOg3qMmjEQ9uKC9F7JKKq98jgZWSH1T1N9ykCz89yQjYDBEn2kxT88rdBWbwxYyjCB2_IzI0lWTjhouhtbFzh_K4J84rjlxp0h1VbSY-k7YF2TJCrXQeLSS0sdCgrjyrj0YHXzdACxyX9Va7aJJ8jAMIFL3v2O0Sx1EvqdpktWLQ_YMq4GM"/>
+<button class="absolute left-4 top-1/2 -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white rounded-full p-2">
+<span class="material-icons">chevron_left</span>
+</button>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white rounded-full p-2">
+<span class="material-icons">chevron_right</span>
+</button>
+</div>
+<div class="p-4">
+<div class="flex items-center space-x-4 mb-2">
+<button><span class="material-icons text-red-500">favorite</span></button>
+<button><span class="material-icons">chat_bubble_outline</span></button>
+<button><span class="material-icons">send</span></button>
+<button class="ml-auto"><span class="material-icons">bookmark_border</span></button>
+</div>
+<p class="font-semibold">1,234 likes</p>
+<p><span class="font-semibold">laxmisai_93</span> Future past.</p>
+<p class="text-gray-400 text-sm mt-2">View all 56 comments</p>
+</div>
+</div>
+</div>
+</main>
+<aside class="hidden md:flex flex-col w-80 p-6 border-l border-gray-800">
+<div class="bg-gray-200 text-black rounded-full px-6 py-2 mb-8 flex items-center justify-center">
+<span class="font-bold text-lg">#trending</span>
+</div>
+<div class="space-y-6">
+<div class="flex items-center space-x-4">
+<div class="w-3 h-3 bg-white rounded-full"></div>
+<div class="w-full h-3 bg-white rounded-full"></div>
+</div>
+<div class="flex items-center space-x-4">
+<div class="w-3 h-3 bg-white rounded-full"></div>
+<div class="w-full h-3 bg-white rounded-full"></div>
+</div>
+<div class="flex items-center space-x-4">
+<div class="w-3 h-3 bg-white rounded-full"></div>
+<div class="w-full h-3 bg-white rounded-full"></div>
+</div>
+<div class="flex items-center space-x-4">
+<div class="w-3 h-3 bg-white rounded-full"></div>
+<div class="w-full h-3 bg-white rounded-full"></div>
+</div>
+<div class="flex items-center space-x-4">
+<div class="w-3 h-3 bg-white rounded-full"></div>
+<div class="w-full h-3 bg-white rounded-full"></div>
+</div>
+</div>
+<div class="mt-10 flex space-x-4">
+<div class="flex-1 space-y-3">
+<div class="w-full h-4 bg-white rounded-full"></div>
+<div class="w-full h-4 bg-white rounded-full"></div>
+<div class="w-full h-4 bg-white rounded-full"></div>
+</div>
+<div class="flex-1 space-y-3">
+<div class="w-full h-4 bg-white rounded-full"></div>
+<div class="w-full h-4 bg-white rounded-full"></div>
+<div class="w-full h-4 bg-white rounded-full"></div>
+</div>
+</div>
+<div class="mt-auto flex justify-end">
+<button class="bg-gray-700 rounded-full p-3">
+<span class="material-icons">expand_less</span>
+</button>
+</div>
+</aside>
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 flex justify-around p-2">
+<a class="flex flex-col items-center text-white hover:text-fuchsia-400" href="#">
+<span class="material-icons">home</span>
+</a>
+<a class="flex flex-col items-center text-white hover:text-fuchsia-400" href="#">
+<span class="material-icons">explore</span>
+</a>
+<a class="flex flex-col items-center text-white hover:text-fuchsia-400" href="#">
+<span class="material-icons">add_circle_outline</span>
+</a>
+<a class="flex flex-col items-center text-white hover:text-fuchsia-400" href="#">
+<span class="material-icons">notifications</span>
+</a>
+<a class="flex flex-col items-center text-white hover:text-fuchsia-400" href="#">
+<img alt="User profile picture" class="w-6 h-6 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHkDEiaQaWCCL1zIQw-Fly2iYHIbIAoQHUBNqclbWCkJWCEvVaYCA-kLeh8Jj2JUR-CapDYGmRBFgZz0MswK2I4D5RM72oq__nBLwNEpmM575ymrRAbv2aTs155Y4kF9xrqVyjnE64Dzwp5QokDVQNxKDdE64SZ-6dGGgq_qrZvN8OFX_V2PRcLDQ6RBD5A_NOHV7S9cnZaumHjcIqyPyCAoDrK2NPRPRbtNnXy-_axFKVlmUBJBK9rCdGWlp1D1AdLXgxTeDOp_s"/>
+</a>
+</nav>
+</div>
+
+</body></html>
