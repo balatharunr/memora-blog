@@ -277,7 +277,7 @@ function ProfileContent() {
   
   return (
     <MainLayout>
-      <div className="space-y-8">
+      <div className="space-y-8 w-full post-container">
         {/* Profile header */}
         <div className="bg-gray-900 rounded-lg p-6">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6">

@@ -146,7 +146,7 @@ const PostCard = ({ post, onDelete, refreshPosts }) => {
   };
 
   return (
-    <div className="bg-gray-900 rounded-lg overflow-hidden mb-4 border border-gray-800">
+    <div className="bg-gray-900 rounded-lg overflow-hidden mb-4 border border-gray-800 w-full max-w-full">
       {/* Post header */}
       <div className="p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">

@@ -77,7 +77,7 @@ function PostContent() {
   
   return (
     <MainLayout>
-      <div className="space-y-8">
+      <div className="space-y-8 w-full post-container">
         {/* Post actions for author or admin */}
         {(isAuthor || userIsAdmin) && (
           <div className="flex justify-end gap-3">

@@ -33,7 +33,8 @@ const LeftNav = () => {
   return (
     <div className="h-screen sticky top-0 p-4">
       <div className="flex items-center mb-8">
-        <h1 className="text-3xl font-bold text-purple-500">MEMORA</h1>
+        <h1 className="text-3xl memora-font text-purple-500">MEMORA</h1>
+        <span className="blog-font" style={{ display: 'inline-block' }}>Blogs</span>
       </div>
       
       <nav>

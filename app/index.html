@@ -2,22 +2,44 @@
 <html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Memora</title>
+<title>MEMORA</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Great+Vibes&display=swap" rel="stylesheet">
 <style>
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #000000;
             color: #ffffff;
         }
+        .caveat-font {
+          font-family: "Caveat", cursive;
+          font-optical-sizing: auto;
+          font-weight: 700;
+          font-style: normal;
+        }
+        .great-vibes-font {
+          font-family: "Great Vibes", cursive;
+          font-weight: 400;
+          font-style: normal;
+          font-size: 30px;
+          color: white;
+          margin-left: 10px;
+          margin-top: 12px;
+          transform: translateY(5px);
+        }
     </style>
 </head>
 <body>
 <div class="flex flex-col md:flex-row min-h-screen">
 <aside class="hidden md:flex flex-col w-64 p-6 border-r border-gray-800">
-<h1 class="text-3xl font-bold text-fuchsia-400 mb-10">MEMORA</h1>
+<div class="flex items-baseline mb-10">
+<h1 class="text-3xl caveat-font text-fuchsia-400">MEMORA</h1>
+<span class="great-vibes-font">Blogs</span>
+</div>
 <nav class="flex flex-col space-y-6">
 <a class="flex items-center space-x-4 text-lg hover:text-fuchsia-400" href="#">
 <span class="material-icons">home</span>
