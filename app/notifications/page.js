@@ -40,9 +40,9 @@ export default function NotificationsPage() {
         <div className="bg-gray-900 rounded-lg p-8 text-center">
           <h1 className="text-2xl font-bold mb-4">Notifications</h1>
           <p className="text-gray-400 mb-4">You need to be signed in to see your notifications.</p>
-          <a href="/auth/signin" className="bg-purple-600 text-white px-6 py-3 rounded-md font-medium hover:bg-purple-700">
+          <Link href="/auth/signin" className="bg-purple-600 text-white px-6 py-3 rounded-md font-medium hover:bg-purple-700">
             Sign In
-          </a>
+          </Link>
         </div>
       </MainLayout>
     );

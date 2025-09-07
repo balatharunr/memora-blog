@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import MainLayout from '../../components/MainLayout';
 import Image from 'next/image';
+import Link from 'next/link';
 import { messages as initialMessages } from '../../lib/dummyData';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -97,9 +98,9 @@ export default function MessagesPage() {
         <div className="bg-gray-900 rounded-lg p-8 text-center">
           <h1 className="text-2xl font-bold mb-4">Messages</h1>
           <p className="text-gray-400 mb-4">You need to be signed in to access your messages.</p>
-          <a href="/auth/signin" className="bg-purple-600 text-white px-6 py-3 rounded-md font-medium hover:bg-purple-700">
+          <Link href="/auth/signin" className="bg-purple-600 text-white px-6 py-3 rounded-md font-medium hover:bg-purple-700">
             Sign In
-          </a>
+          </Link>
         </div>
       </MainLayout>
     );

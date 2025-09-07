@@ -5,6 +5,7 @@ import MainLayout from '../components/MainLayout';
 import PostCard from '../components/PostCard';
 import { useSession, signIn } from 'next-auth/react';
 import { useAllPosts } from '../lib/hooks';
+import Link from 'next/link';
 
 export default function Home() {
   const { data: session } = useSession();
@@ -67,7 +68,7 @@ export default function Home() {
               <p>Be the first to create a post.</p>
             ) : (
               <p>
-                <a href="/auth/signin" className="text-purple-400 hover:underline">Sign in</a> to start posting.
+                <Link href="/auth/signin" className="text-purple-400 hover:underline">Sign in</Link> to start posting.
               </p>
             )}
           </div>
