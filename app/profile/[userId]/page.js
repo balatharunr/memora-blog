@@ -10,7 +10,13 @@ import Link from 'next/link';
 import { useUserPosts } from '../../../lib/hooks';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
-import { updateUserProfile } from '../../../lib/firebaseUtils';
+import { 
+  updateUserProfile, 
+  followUser, 
+  unfollowUser, 
+  checkIsFollowing, 
+  getUserStats 
+} from '../../../lib/firebaseUtils';
 
 // Client component that uses the useParams hook
 function ProfileContent() {
@@ -76,8 +82,13 @@ function ProfileContent() {
           }
           
           setIsOwnProfile(false);
-          // For now, not implementing follow functionality
-          setIsFollowing(false);
+          // Check follow status if user is logged in
+          if (session?.user?.id) {
+            const followStatus = await checkIsFollowing(session.user.id, userId);
+            setIsFollowing(followStatus);
+          } else {
+            setIsFollowing(false);
+          }
         }
         
         setUser(profileUser);
@@ -101,28 +112,63 @@ function ProfileContent() {
     }
   }, [userId, session]);
   
-  // Update stats when posts are loaded
+  // Update stats when posts are loaded and fetch follower stats
   useEffect(() => {
-    if (userPosts) {
-      setStats(prev => ({
-        ...prev,
-        posts: userPosts.length,
-        // For now, not implementing followers/following counts
-        followers: prev.followers || 0,
-        following: prev.following || 0
-      }));
+    async function fetchStats() {
+      if (userPosts) {
+        try {
+          // Get follower and following counts from Firebase
+          const userStats = await getUserStats(userId);
+          
+          setStats(prev => ({
+            ...prev,
+            posts: userPosts.length,
+            followers: userStats.followersCount,
+            following: userStats.followingCount
+          }));
+        } catch (error) {
+          console.error('Error fetching user stats:', error);
+          setStats(prev => ({
+            ...prev,
+            posts: userPosts.length
+          }));
+        }
+      }
     }
-  }, [userPosts]);
+    
+    fetchStats();
+  }, [userPosts, userId]);
   
-  const toggleFollow = () => {
-    // For now, just simulate the follow/unfollow action
-    if (isFollowing) {
-      setStats(prev => ({ ...prev, followers: prev.followers - 1 }));
-    } else {
-      setStats(prev => ({ ...prev, followers: prev.followers + 1 }));
+  const toggleFollow = async () => {
+    if (!session?.user?.id) {
+      // Redirect to sign in if not logged in
+      window.location.href = '/auth/signin';
+      return;
     }
-    setIsFollowing(!isFollowing);
-    // In a real implementation, we would call a Firebase function to update follow status
+    
+    try {
+      if (isFollowing) {
+        // Unfollow user
+        const result = await unfollowUser(session.user.id, userId);
+        if (result.success) {
+          setIsFollowing(false);
+          // Update local stats for immediate feedback
+          setStats(prev => ({ ...prev, followers: Math.max(0, prev.followers - 1) }));
+        }
+      } else {
+        // Follow user
+        const result = await followUser(session.user.id, userId);
+        if (result.success) {
+          setIsFollowing(true);
+          // Update local stats for immediate feedback
+          setStats(prev => ({ ...prev, followers: prev.followers + 1 }));
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling follow status:', error);
+      // Show error message to user (optional)
+      alert('Failed to update follow status. Please try again.');
+    }
   };
   
   // Refresh the posts when one is deleted or updated
