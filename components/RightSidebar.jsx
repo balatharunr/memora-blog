@@ -49,6 +49,8 @@ const RightSidebar = ({ trending = [], hashtags = [], isLoading = false }) => {
                   href={`/explore?tag=${encodeURIComponent(cleanTag)}`} 
                   key={tag}
                   className="px-3 py-1 bg-gray-800 hover:bg-purple-900 rounded-full text-sm transition-colors"
+                  prefetch={true} // Ensure data is pre-fetched for smoother transitions
+                  scroll={false} // Prevent scroll jumping
                 >
                   {displayTag}
                 </Link>

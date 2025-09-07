@@ -42,9 +42,17 @@ const MainLayout = ({ children }) => {
         <LeftNav />
       </div>
       
+      {/* Mobile header - only visible on mobile */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 flex justify-center items-center py-3 px-4 bg-black border-b border-gray-800 z-20">
+        <div className="flex items-center justify-center">
+          <h1 className="text-2xl memora-font text-purple-500">MEMORA</h1>
+          <span className="blog-font mobile-blog-font">Blogs</span>
+        </div>
+      </div>
+      
       {/* Main content */}
       <div className="flex-1 lg:ml-64">
-        <div className="max-w-6xl mx-auto py-8 pb-20 lg:pb-8">
+        <div className="max-w-6xl mx-auto py-8 pb-20 lg:pb-8 mt-14 lg:mt-0">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 px-3 sm:px-4">
             <div className="lg:col-span-3">
               {children}
