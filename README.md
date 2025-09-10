@@ -178,7 +178,7 @@ blogapp/
 <img width="600" alt="Screenshot 2025-09-10 095203" src="https://github.com/user-attachments/assets/3637b5ef-eec5-474e-a6d7-f7136c5eba65" />
 
 7. Mobile view
-<img width="423" height="826" alt="image" src="https://github.com/user-attachments/assets/4e731ed2-c343-4d19-8c12-ff0f68b99b33" />
+<img width="250" alt="image" src="https://github.com/user-attachments/assets/4e731ed2-c343-4d19-8c12-ff0f68b99b33" />
 
 ## Contributing
 
