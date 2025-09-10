@@ -160,14 +160,14 @@ blogapp/
 
 ## Screenshots
 
-<!-- Add screenshots of your project here. Recommended screenshots:
 1. Home page/feed - Screenshot showing the main feed with several posts
+<img width="600" height="" alt="Screenshot 2025-09-10 095013" src="https://github.com/user-attachments/assets/1ce88dbc-1d05-47f9-9f79-bf2d8cd321b1" />
+
 2. Post creation page - Screenshot of the create post form with image upload
 3. Profile page - Screenshot of a user profile with the edit profile modal open
 4. Explore/Discover page - Screenshot showing the hashtags and filtered posts
 5. Individual post view - Screenshot of a post with comments expanded
 6. Mobile view - Screenshot showing the responsive design on a mobile device
--->
 
 ## Contributing
 
