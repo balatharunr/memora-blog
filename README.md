@@ -161,18 +161,24 @@ blogapp/
 ## Screenshots
 1. Signin page
 <img width="600" alt="Screenshot 2025-09-10 095241" src="https://github.com/user-attachments/assets/00d5f120-6ffb-4349-a012-42b853164bc7" />
+
 2. Home page
 <img width="600" height="" alt="Screenshot 2025-09-10 095013" src="https://github.com/user-attachments/assets/1ce88dbc-1d05-47f9-9f79-bf2d8cd321b1" />
+
 3. Post creation page
-   <img width="600" alt="Screenshot 2025-09-10 095138" src="https://github.com/user-attachments/assets/15db6e4d-1fc5-4826-822d-5fc092b8c3e4" />
+<img width="600" alt="Screenshot 2025-09-10 095138" src="https://github.com/user-attachments/assets/15db6e4d-1fc5-4826-822d-5fc092b8c3e4" />
+   
 4. Profile page
 <img width="600" alt="Screenshot 2025-09-10 095148" src="https://github.com/user-attachments/assets/025c9210-55e8-408a-9675-5e8622ae8ca0" />
+
 5. Explore page
 <img width="600" alt="Screenshot 2025-09-10 095030" src="https://github.com/user-attachments/assets/cd69cff4-615d-4087-b00b-408912805b1a" />
+
 6. Dashboard page
 <img width="600" alt="Screenshot 2025-09-10 095203" src="https://github.com/user-attachments/assets/3637b5ef-eec5-474e-a6d7-f7136c5eba65" />
+
 7. Mobile view
-![WhatsApp Image 2025-09-10 at 10 03 05_f067249c](https://github.com/user-attachments/assets/9110e6e5-1078-49ef-ad20-0e7b3f66c92e)
+<img width="423" height="826" alt="image" src="https://github.com/user-attachments/assets/4e731ed2-c343-4d19-8c12-ff0f68b99b33" />
 
 ## Contributing
 
