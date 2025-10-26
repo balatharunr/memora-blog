@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono, Caveat, Great_Vibes } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from '../components/AuthProvider';
+import Script from 'next/script';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+    <head>
+        <Script
+          defer
+          data-website-id="dfid_jQbWGKS3rPJbM9x4JW3cx"
+          data-domain="memora-blog-rn9i.vercel.app"
+          src="https://datafa.st/js/script.js"
+          strategy="afterInteractive"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${caveatFont.variable} ${greatVibesFont.variable} bg-black text-white antialiased`}
       >
