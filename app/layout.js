@@ -38,7 +38,7 @@ export default function RootLayout({ children }) {
         <Script
           defer
           data-website-id="dfid_9j3K38mp6uMUL4KvD5UKP"
-          data-domain="memora-blog.vercel.app"
+          data-domain="memora-blog-rn9i.vercel.app"
           src="https://datafa.st/js/script.js"
           strategy="afterInteractive"
         />
