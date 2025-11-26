@@ -1,0 +1,101 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user is the owner
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // Anyone can read user profiles
+      allow read: if true;
+      // Only the user themselves can create/update their profile
+      allow create, update: if isOwner(userId);
+      allow delete: if isOwner(userId);
+    }
+    
+    // Posts collection
+    match /posts/{postId} {
+      // Anyone can read posts
+      allow read: if true;
+      // Authenticated users can create posts
+      allow create: if isAuthenticated() 
+        && request.resource.data.authorId == request.auth.uid;
+      // Only post owner can update or delete
+      allow update: if isAuthenticated() 
+        && (resource.data.authorId == request.auth.uid 
+            || request.resource.data.authorId == request.auth.uid);
+      allow delete: if isAuthenticated() 
+        && resource.data.authorId == request.auth.uid;
+    }
+    
+    // Comments collection
+    match /comments/{commentId} {
+      // Anyone can read comments
+      allow read: if true;
+      // Authenticated users can create comments
+      allow create: if isAuthenticated() 
+        && request.resource.data.userId == request.auth.uid;
+      // Only comment owner can update or delete
+      allow update, delete: if isAuthenticated() 
+        && resource.data.userId == request.auth.uid;
+    }
+    
+    // Likes collection
+    match /likes/{likeId} {
+      // Anyone can read likes
+      allow read: if true;
+      // Authenticated users can create/delete likes
+      allow create: if isAuthenticated() 
+        && request.resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() 
+        && resource.data.userId == request.auth.uid;
+    }
+    
+    // Followers collection
+    match /followers/{followId} {
+      // Anyone can read followers
+      allow read: if true;
+      // Authenticated users can create/delete follow relationships
+      allow create: if isAuthenticated() 
+        && request.resource.data.followerId == request.auth.uid;
+      allow delete: if isAuthenticated() 
+        && resource.data.followerId == request.auth.uid;
+    }
+    
+    // Notifications collection
+    match /notifications/{notificationId} {
+      // Users can only read their own notifications
+      allow read: if isAuthenticated() 
+        && resource.data.userId == request.auth.uid;
+      // Any authenticated user can create notifications (for likes, comments, follows)
+      allow create: if isAuthenticated();
+      // Users can only update/delete their own notifications
+      allow update, delete: if isAuthenticated() 
+        && resource.data.userId == request.auth.uid;
+    }
+    
+    // Post Analytics collection
+    match /postAnalytics/{analyticsId} {
+      // Anyone can read analytics
+      allow read: if true;
+      // Any authenticated user can create/update analytics
+      allow create, update: if isAuthenticated();
+    }
+    
+    // Post Views collection (for tracking views)
+    match /postViews/{viewId} {
+      // Anyone can read views
+      allow read: if true;
+      // Anyone can create views (including anonymous users)
+      allow create: if true;
+    }
+  }
+}
